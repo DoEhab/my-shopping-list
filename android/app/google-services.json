@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985202200278",
+    "project_id": "my-e-list",
+    "storage_bucket": "my-e-list.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985202200278:android:6ee3e75bccf42ac4280377",
+        "android_client_info": {
+          "package_name": "com.alx.e_shopping_list"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5ZzNpfhky0E7ZrsxDEP1gT95mb9cv3uY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
