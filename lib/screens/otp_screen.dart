@@ -28,8 +28,8 @@ class _OTPScreenState extends State<OTPScreen> {
     if (_otpController.text.trim().isEmpty) {
       Fluttertoast.showToast(
         msg: "Please enter OTP",
-        gravity: ToastGravity.TOP,
-        textColor: Colors.black,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
       );
       return;
     }
@@ -51,8 +51,8 @@ class _OTPScreenState extends State<OTPScreen> {
         await saveUserToFirestore(userCredential.user!, uName);
         Fluttertoast.showToast(
           msg: "Successfully logged in!",
-          gravity: ToastGravity.TOP,
-          textColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
         );
         // Navigate to home screen or next screen after successful login
         if (mounted) {
@@ -78,14 +78,14 @@ class _OTPScreenState extends State<OTPScreen> {
 
       Fluttertoast.showToast(
         msg: errorMessage,
-        gravity: ToastGravity.TOP,
-        textColor: Colors.black,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
       );
     } catch (e) {
       Fluttertoast.showToast(
         msg: "An unexpected error occurred",
-        gravity: ToastGravity.TOP,
-        textColor: Colors.black,
+        gravity: ToastGravity.BOTTOM,
+        textColor: Colors.white,
       );
     } finally {
       if (mounted) {

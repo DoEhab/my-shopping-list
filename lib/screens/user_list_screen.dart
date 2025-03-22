@@ -1,3 +1,4 @@
+import 'package:e_shopping_list/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -153,18 +154,46 @@ class _UserListScreenState extends State<UserListScreen> {
     }
   }
 
-  Future<void> _deleteList(String listId) async {
-    setState(() => _isLoading = true);
-    try {
-      await _firestoreService.deleteShoppingList(
-        _auth.currentUser!.uid,
-        listId,
-      );
-      Fluttertoast.showToast(msg: AppConstants.successListDeleted);
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error deleting list: $e');
-    } finally {
-      setState(() => _isLoading = false);
+  Future<void> _deleteList(String listId, [BuildContext? dialogContext]) async {
+    // Show confirmation dialog
+    final bool? confirm = await showDialog<bool>(
+      context: dialogContext ?? context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete List'),
+        content: const Text('Are you sure you want to delete this list?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      setState(() => _isLoading = true);
+      try {
+        await _firestoreService.deleteShoppingList(
+          _auth.currentUser!.uid,
+          listId,
+        );
+        if (dialogContext != null) {
+          Navigator.of(dialogContext)
+              .pop(); // Pop the detail screen if we're in it
+        }
+        Fluttertoast.showToast(msg: AppConstants.successListDeleted);
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Error deleting list: $e');
+      } finally {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -176,7 +205,17 @@ class _UserListScreenState extends State<UserListScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => _auth.signOut(),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              if (mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Login(),
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
@@ -229,7 +268,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _deleteList(list.id),
+                        onPressed: () => _deleteList(list.id, context),
                         tooltip: 'Delete List',
                       ),
                     ),
@@ -246,10 +285,8 @@ class _UserListScreenState extends State<UserListScreen> {
                                     IconButton(
                                       icon: const Icon(Icons.delete,
                                           color: Colors.red),
-                                      onPressed: () {
-                                        _deleteList(list.id);
-                                        Navigator.pop(context);
-                                      },
+                                      onPressed: () =>
+                                          _deleteList(list.id, context),
                                       tooltip: 'Delete List',
                                     ),
                                   ],
