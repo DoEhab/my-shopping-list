@@ -1,3 +1,5 @@
+import 'package:e_shopping_list/screens/email_login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shopping_list/screens/login_with_phone.dart';
 
@@ -55,10 +57,10 @@ class _LoginOptionsState extends State<LoginOptions> {
               width: 300,
               child: ElevatedButton(
                 onPressed: () {
-                  // Temporarily disabled email login
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Email login coming soon!'),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginWithEmail(),
                     ),
                   );
                 },

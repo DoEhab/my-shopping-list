@@ -36,8 +36,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
       Fluttertoast.showToast(
           msg: "Please enter a phone number/user name",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          textColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
           fontSize: 16.0);
       return;
     }
@@ -58,8 +58,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           Fluttertoast.showToast(
               msg: "Auto verification completed",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              textColor: Colors.black,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
               fontSize: 16.0);
         },
         verificationFailed: (FirebaseAuthException e) {
@@ -85,8 +85,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           Fluttertoast.showToast(
               msg: errorMessage,
               toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.TOP,
-              textColor: Colors.black,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
               fontSize: 16.0);
         },
         codeSent: (String verificationId, int? resendToken) {
@@ -95,8 +95,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           Fluttertoast.showToast(
               msg: "OTP sent successfully!",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              textColor: Colors.black,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
               fontSize: 16.0);
           Navigator.push(
             context,
@@ -114,8 +114,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           Fluttertoast.showToast(
               msg: "OTP timeout",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.TOP,
-              textColor: Colors.black,
+              gravity: ToastGravity.BOTTOM,
+              textColor: Colors.white,
               fontSize: 16.0);
         },
         timeout: const Duration(seconds: 60),
@@ -126,8 +126,8 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
       Fluttertoast.showToast(
           msg: "Unexpected error: $e",
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          textColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
           fontSize: 16.0);
     }
   }
@@ -145,7 +145,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
               decoration: const InputDecoration(
                 hintText: 'Enter your name',
                 border: OutlineInputBorder(),
-                helperText: 'Joe Doe',
+                helperText: 'First Name',
               ),
               keyboardType: TextInputType.text,
             ),
