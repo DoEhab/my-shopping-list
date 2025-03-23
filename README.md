@@ -1,16 +1,53 @@
 # e_shopping_list
+This an app to manage shopping lists with the ability to add links for reference
 
-A new Flutter project.
+## Features
+- Login with email/password
+- Login with phone number
+- Create shopping list
+- Add, Edit, Delete list items
+- Add links to an item as reference
 
-## Getting Started
+## Prerequisites
+- Flutter/Dart Plugin on Android Studio
+- Firebase CLI
 
-This project is a starting point for a Flutter application.
+## Installation 
+1- Clone Git Repository
+```https://github.com/DoEhab/my-shopping-list.git```
+2- Install dependencies from terminal
+```flutter pub get```
+3- Configure Firebase:
+    - Create Firebase Project
+    - Enable support for Android and iOS
+    - Add .json and .plist to Android and iOS folders
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
+├── models/           # Data models
+├── screens/          # UI screens
+├── services/         # Business logic and Firebase services
+├── widgets/          # Reusable UI components
+├── utils/            # Constants and utility functions
+└── main.dart
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Usage
+1- **Authentication**
+    - Signup with email or phone number
+    - Login with phone number
+2- **Mange the shopping list**
+    - Create new list
+    - Delete lists
+    - Add items to the list
+    - check items as purchased
+    - Add link to items for reference
+3- **Sync List**
+    - Lists are updated instantly
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dependencies
+
+- firebase_core: ^2.24.2
+- firebase_auth: ^4.15.3
+- cloud_firestore: ^4.13.6
+- url_launcher: ^6.2.2
+- fluttertoast: ^8.0.8
+
