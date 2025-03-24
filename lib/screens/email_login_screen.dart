@@ -92,8 +92,8 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
             'User successfully logged in with ID: ${userCredential.user?.uid}');
         Fluttertoast.showToast(
           msg: "Successfully logged in!",
-          gravity: ToastGravity.TOP,
-          textColor: Colors.black,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.white,
         );
         // Navigate to home screen after successful login
         if (mounted) {

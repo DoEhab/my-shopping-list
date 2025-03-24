@@ -22,11 +22,21 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
   bool _isExpanded = false;
 
   Future<void> _launchUrl() async {
-    if (widget.item.link != null) {
-      final Uri url = Uri.parse(widget.item.link!);
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url);
-      }
+    String? link = widget.item.link;
+
+    if (link == null || link.isEmpty) {
+      debugPrint("Error: URL is null or empty");
+      return;
+    }
+
+    if (!link.startsWith("http")) {
+      link = "https://$link";
+    }
+
+    if (await canLaunchUrl(Uri.parse(link))) {
+      await launchUrl(Uri.parse(link));
+    } else {
+      debugPrint("Error: Cannot launch $link");
     }
   }
 

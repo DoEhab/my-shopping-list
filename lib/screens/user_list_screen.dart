@@ -7,6 +7,8 @@ import '../services/firestore_service.dart';
 import '../widgets/shopping_list_card.dart';
 import '../utils/constants.dart';
 
+// fix adding items and updating the card
+// fix delete card
 class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key}) : super(key: key);
 
@@ -18,15 +20,11 @@ class _UserListScreenState extends State<UserListScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _itemController = TextEditingController();
-  final TextEditingController _linkController = TextEditingController();
   bool _isLoading = false;
 
   @override
   void dispose() {
     _nameController.dispose();
-    _itemController.dispose();
-    _linkController.dispose();
     super.dispose();
   }
 
@@ -79,81 +77,6 @@ class _UserListScreenState extends State<UserListScreen> {
     );
   }
 
-  Future<void> _addItem(String listId, List<ShoppingListItem> currentItems,
-      String listName) async {
-    if (_itemController.text.isEmpty) {
-      Fluttertoast.showToast(msg: AppConstants.errorEmptyItem);
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    try {
-      final newItem = ShoppingListItem(
-        name: _itemController.text,
-        link: _linkController.text.isNotEmpty ? _linkController.text : null,
-        isChecked: false,
-      );
-
-      final updatedItems = [...currentItems, newItem];
-      await _firestoreService.updateShoppingList(
-        _auth.currentUser!.uid,
-        listId,
-        listName,
-        updatedItems,
-      );
-
-      _itemController.clear();
-      _linkController.clear();
-      Fluttertoast.showToast(msg: 'Item added successfully');
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error adding item: $e');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  Future<void> _deleteItem(String listId, List<ShoppingListItem> currentItems,
-      int index, String listName) async {
-    setState(() => _isLoading = true);
-    try {
-      final updatedItems = List<ShoppingListItem>.from(currentItems)
-        ..removeAt(index);
-      await _firestoreService.updateShoppingList(
-        _auth.currentUser!.uid,
-        listId,
-        listName,
-        updatedItems,
-      );
-      Fluttertoast.showToast(msg: 'Item deleted successfully');
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error deleting item: $e');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  Future<void> _toggleItemCheck(String listId,
-      List<ShoppingListItem> currentItems, int index, String listName) async {
-    setState(() => _isLoading = true);
-    try {
-      final updatedItems = List<ShoppingListItem>.from(currentItems);
-      updatedItems[index] = updatedItems[index].copyWith(
-        isChecked: !updatedItems[index].isChecked,
-      );
-
-      await _firestoreService.updateShoppingList(
-        _auth.currentUser!.uid,
-        listId,
-        listName,
-        updatedItems,
-      );
-    } catch (e) {
-      Fluttertoast.showToast(msg: 'Error updating item: $e');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
   Future<void> _deleteList(String listId, [BuildContext? dialogContext]) async {
     // Show confirmation dialog
     final bool? confirm = await showDialog<bool>(
@@ -184,7 +107,7 @@ class _UserListScreenState extends State<UserListScreen> {
           _auth.currentUser!.uid,
           listId,
         );
-        if (dialogContext != null) {
+        if (dialogContext != null && mounted) {
           Navigator.of(dialogContext)
               .pop(); // Pop the detail screen if we're in it
         }
@@ -278,109 +201,12 @@ class _UserListScreenState extends State<UserListScreen> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => Scaffold(
-                                appBar: AppBar(
-                                  title: Text(list['name'] ?? 'Unnamed List'),
-                                  actions: [
-                                    IconButton(
-                                      icon: const Icon(Icons.delete,
-                                          color: Colors.red),
-                                      onPressed: () =>
-                                          _deleteList(list.id, context),
-                                      tooltip: 'Delete List',
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView(
-                                        padding: const EdgeInsets.all(8),
-                                        children: [
-                                          if (items.isEmpty)
-                                            const Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Center(
-                                                child: Text(
-                                                  'No items yet',
-                                                  style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          else
-                                            ...items
-                                                .map((item) => ShoppingListCard(
-                                                      item: item,
-                                                      onDelete: () => _deleteItem(
-                                                          list.id,
-                                                          items,
-                                                          items.indexOf(item),
-                                                          list['name'] ??
-                                                              'Unnamed List'),
-                                                      onCheckChanged:
-                                                          (checked) =>
-                                                              _toggleItemCheck(
-                                                        list.id,
-                                                        items,
-                                                        items.indexOf(item),
-                                                        list['name'] ??
-                                                            'Unnamed List',
-                                                      ),
-                                                    )),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          TextField(
-                                            controller: _itemController,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Item Name',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          TextField(
-                                            controller: _linkController,
-                                            decoration: const InputDecoration(
-                                              labelText:
-                                                  'Product Link (Optional)',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          ElevatedButton(
-                                            onPressed: _isLoading
-                                                ? null
-                                                : () => _addItem(
-                                                      list.id,
-                                                      items,
-                                                      list['name'] ??
-                                                          'Unnamed List',
-                                                    ),
-                                            child: _isLoading
-                                                ? const SizedBox(
-                                                    height: 20,
-                                                    width: 20,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                    ),
-                                                  )
-                                                : const Text('Add Item'),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              builder: (context) => ListDetailScreen(
+                                listId: list.id,
+                                listName: list['name'] ?? 'Unnamed List',
+                                items: items,
+                                onDeleteList: () =>
+                                    _deleteList(list.id, context),
                               ),
                             ),
                           );
@@ -458,5 +284,198 @@ class _UserListScreenState extends State<UserListScreen> {
             : const Icon(Icons.add),
       ),
     );
+  }
+}
+
+class ListDetailScreen extends StatefulWidget {
+  final String listId;
+  final String listName;
+  final List<ShoppingListItem> items;
+  final VoidCallback onDeleteList;
+
+  const ListDetailScreen({
+    Key? key,
+    required this.listId,
+    required this.listName,
+    required this.items,
+    required this.onDeleteList,
+  }) : super(key: key);
+
+  @override
+  State<ListDetailScreen> createState() => _ListDetailScreenState();
+}
+
+class _ListDetailScreenState extends State<ListDetailScreen> {
+  final TextEditingController _itemController = TextEditingController();
+  final TextEditingController _linkController = TextEditingController();
+  bool _isLoading = false;
+  late List<ShoppingListItem> _items;
+
+  @override
+  void initState() {
+    super.initState();
+    _items = List.from(widget.items);
+  }
+
+  @override
+  void dispose() {
+    _itemController.dispose();
+    _linkController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _addItem() async {
+    if (_itemController.text.isEmpty) {
+      Fluttertoast.showToast(msg: AppConstants.errorEmptyItem);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    try {
+      final newItem = ShoppingListItem(
+        name: _itemController.text,
+        link: _linkController.text.isNotEmpty ? _linkController.text : null,
+        isChecked: false,
+      );
+      setState(() {
+        _items.add(newItem);
+      });
+      await FirestoreService().updateShoppingList(
+        FirebaseAuth.instance.currentUser!.uid,
+        widget.listId,
+        widget.listName,
+        _items,
+      );
+
+      _itemController.clear();
+      _linkController.clear();
+      Fluttertoast.showToast(msg: 'Item added successfully');
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error adding item: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.listName),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.red),
+            onPressed: widget.onDeleteList,
+            tooltip: 'Delete List',
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(8),
+              children: [
+                if (_items.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Text(
+                        'No items yet',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  ..._items.map((item) => ShoppingListCard(
+                        item: item,
+                        onDelete: () => _deleteItem(widget.items.indexOf(item)),
+                        onCheckChanged: (checked) =>
+                            _toggleItemCheck(widget.items.indexOf(item)),
+                      )),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: _itemController,
+                  decoration: const InputDecoration(
+                    labelText: 'Item Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _linkController,
+                  decoration: const InputDecoration(
+                    labelText: 'Product Link (Optional)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _addItem,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text('Add Item'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteItem(int index) async {
+    setState(() => _isLoading = true);
+    try {
+      _items.removeAt(index);
+      await FirestoreService().updateShoppingList(
+        FirebaseAuth.instance.currentUser!.uid,
+        widget.listId,
+        widget.listName,
+        _items,
+      );
+      Fluttertoast.showToast(msg: 'Item deleted successfully');
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error deleting item: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _toggleItemCheck(int index) async {
+    setState(() => _isLoading = true);
+    try {
+      _items[index] =
+          _items[index].copyWith(isChecked: !_items[index].isChecked);
+
+      await FirestoreService().updateShoppingList(
+        FirebaseAuth.instance.currentUser!.uid,
+        widget.listId,
+        widget.listName,
+        _items,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error updating item: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 }
