@@ -33,9 +33,7 @@ class _OTPScreenState extends State<OTPScreen> {
       );
       return;
     }
-
     setState(() => _isLoading = true);
-
     try {
       final credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId,

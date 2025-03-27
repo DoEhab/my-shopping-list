@@ -23,16 +23,13 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
 
   Future<void> _launchUrl() async {
     String? link = widget.item.link;
-
     if (link == null || link.isEmpty) {
       debugPrint("Error: URL is null or empty");
       return;
     }
-
     if (!link.startsWith("http")) {
       link = "https://$link";
     }
-
     if (await canLaunchUrl(Uri.parse(link))) {
       await launchUrl(Uri.parse(link));
     } else {
