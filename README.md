@@ -1,6 +1,12 @@
 # e_shopping_list
 This an app to manage shopping lists with the ability to add links for reference
 
+## Authors
+- Doha Ehab [www.linkedin.com/in/doha-ahmed-75321735a] 
+- [App Link] (https://appdistribution.firebase.google.com/testerapps/1:985202200278:android:6ee3e75bccf42ac4280377/releases/2prskdsg2hg1g?utm_source=firebase-console)
+- [Demo] (https://drive.google.com/file/d/1ueqfc98v7D0TmYQbsUf5tGSUKgV3Z8kt/view?usp=sharing)
+- [Blog Post] ()
+
 ## Features
 - Login with email/password
 - Login with phone number
@@ -43,6 +49,14 @@ This an app to manage shopping lists with the ability to add links for reference
 3- **Sync List**
     - Lists are updated instantly
 
+## Contributing
+
+- Fork the repository 
+- Create a new branch (git checkout -b feature-branch)
+- Commit your changes (git commit -m 'Add feature name')
+- Push to the branch (git push origin feature-branch)
+- Open a Pull Request
+
 ## Dependencies
 
 - firebase_core: ^2.24.2
@@ -50,4 +64,10 @@ This an app to manage shopping lists with the ability to add links for reference
 - cloud_firestore: ^4.13.6
 - url_launcher: ^6.2.2
 - fluttertoast: ^8.0.8
+
+## Related Projects
+https://www.anylist.com/
+
+## License 
+This project is licensed under the MIT License.
 
