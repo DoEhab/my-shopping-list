@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shopping_list/screens/user_list_screen.dart';
+import 'package:e_shopping_list/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +31,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
         _passwordController.text.trim().isEmpty) {
       debugPrint('Login error: Email or password is empty');
       Fluttertoast.showToast(
-        msg: "Please enter email address",
+        msg: AppConstants.enterEmail,
         gravity: ToastGravity.BOTTOM,
         textColor: Colors.white,
       );
@@ -61,11 +62,11 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
       } else if (e.code == 'email-already-in-use') {
         debugPrint('Error: The account already exists for that email.');
         Fluttertoast.showToast(
-            msg: 'An account already exists for that email.');
+            msg: AppConstants.accountExist);
       }
     } catch (e) {
       debugPrint('Unexpected error during account creation: $e');
-      Fluttertoast.showToast(msg: 'An unexpected error occurred');
+      Fluttertoast.showToast(msg: AppConstants.generalError);
     }
   }
 // existing users login with email
@@ -76,7 +77,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
         _passwordController.text.trim().isEmpty) {
       debugPrint('Login error: Email or password is empty');
       Fluttertoast.showToast(
-        msg: "Please enter email and password",
+        msg: AppConstants.enterEmailPass,
         gravity: ToastGravity.BOTTOM,
         textColor: Colors.white,
       );
@@ -95,7 +96,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
         debugPrint(
             'User successfully logged in with ID: ${userCredential.user?.uid}');
         Fluttertoast.showToast(
-          msg: "Successfully logged in!",
+          msg: AppConstants.successLogin,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.white,
         );
@@ -114,13 +115,13 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
         Fluttertoast.showToast(msg: 'No user found with this email');
       } else if (e.code == 'wrong-password') {
         debugPrint('Error: Wrong password provided for that user.');
-        Fluttertoast.showToast(msg: 'Wrong password provided');
+        Fluttertoast.showToast(msg: AppConstants.wrongPass);
       } else {
         Fluttertoast.showToast(msg: 'Login error: ${e.message}');
       }
     } catch (e) {
       debugPrint('Unexpected error during login: $e');
-      Fluttertoast.showToast(msg: 'An unexpected error occurred');
+      Fluttertoast.showToast(msg: AppConstants.generalError);
     } finally {
       debugPrint('Email login process completed.');
       if (mounted) {
@@ -139,14 +140,14 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Enter Email')),
+      appBar: AppBar(title: const Text(AppConstants.enterEmail)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Enter Your Email',
+              AppConstants.enterEmail,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
@@ -162,7 +163,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Enter Your Password',
+              AppConstants.enterPass,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
@@ -186,7 +187,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Login'),
+                    : const Text(AppConstants.login),
               ),
             ),
             const SizedBox(height: 16),
@@ -199,7 +200,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Sign Up'),
+                    : const Text(AppConstants.signUp),
               ),
             ),
           ],

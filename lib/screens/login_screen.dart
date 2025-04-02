@@ -1,4 +1,5 @@
 import 'package:e_shopping_list/screens/email_login_screen.dart';
+import 'package:e_shopping_list/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shopping_list/screens/login_with_phone.dart';
@@ -13,7 +14,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text(AppConstants.login)),
       body: const LoginOptions(),
     );
   }
@@ -53,7 +54,7 @@ class _LoginOptionsState extends State<LoginOptions> {
                         builder: (context) => const LoginWithPhone()),
                   );
                 },
-                child: const Text('Login with Phone Number'),
+                child: const Text(AppConstants.loginPhone),
               ),
             ),
             const SizedBox(height: 20),
@@ -68,7 +69,7 @@ class _LoginOptionsState extends State<LoginOptions> {
                     ),
                   );
                 },
-                child: const Text('Login with Email'),
+                child: const Text(AppConstants.loginEmail),
               ),
             ),
           ],

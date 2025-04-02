@@ -1,3 +1,4 @@
+import 'package:e_shopping_list/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,7 +39,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
     // Basic validation
     if (phoneNumber.isEmpty || userName.isEmpty) {
       Fluttertoast.showToast(
-          msg: "Please enter a phone number/user name",
+          msg: AppConstants.enterPhone,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.white,
@@ -58,9 +59,9 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
         phoneNumber: formattedNumber,
         verificationCompleted: (PhoneAuthCredential credential) {
           setState(() => _isLoading = false);
-          _log.info('Auto verification completed: $credential');
+          _log.info('${AppConstants.autoVerificationMsg} $credential');
           Fluttertoast.showToast(
-              msg: "Auto verification completed",
+              msg: AppConstants.autoVerificationMsg,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               textColor: Colors.white,
@@ -74,16 +75,16 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
 
           switch (e.code) {
             case 'invalid-phone-number':
-              errorMessage = 'The phone number format is incorrect';
+              errorMessage = AppConstants.incorrectNumber;
               break;
             case 'too-many-requests':
-              errorMessage = 'Too many attempts. Please try again later';
+              errorMessage = AppConstants.manyAttempts;
               break;
             case 'operation-not-allowed':
               errorMessage = 'Phone authentication is not enabled';
               break;
             default:
-              errorMessage = e.message ?? 'An unknown error occurred';
+              errorMessage = e.message ?? AppConstants.generalError;
           }
 
           Fluttertoast.showToast(
@@ -97,7 +98,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           setState(() => _isLoading = false);
           _log.info('OTP sent to $formattedNumber');
           Fluttertoast.showToast(
-              msg: "OTP sent successfully!",
+              msg: AppConstants.otpSent,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               textColor: Colors.white,
@@ -116,7 +117,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
           setState(() => _isLoading = false);
           _log.info('OTP timeout for verification ID: $verificationId');
           Fluttertoast.showToast(
-              msg: "OTP timeout",
+              msg: AppConstants.otpTimeout,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               textColor: Colors.white,
@@ -128,7 +129,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
       setState(() => _isLoading = false);
       _log.severe('Unexpected error during phone verification', e, stackTrace);
       Fluttertoast.showToast(
-          msg: "Unexpected error: $e",
+          msg: "${AppConstants.generalError} $e",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.white,
@@ -139,7 +140,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login with Phone Number')),
+      appBar: AppBar(title: const Text(AppConstants.loginPhone)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -157,9 +158,9 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
             TextField(
               controller: _phoneController,
               decoration: const InputDecoration(
-                hintText: 'Enter your phone number (e.g., +1234567890)',
+                hintText: AppConstants.enterPhoneNumber,
                 border: OutlineInputBorder(),
-                helperText: 'Include country code with + sign',
+                helperText: AppConstants.countryCode,
               ),
               keyboardType: TextInputType.phone,
             ),
@@ -168,7 +169,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
               onPressed: _isLoading ? null : _verifyPhone,
               child: _isLoading
                   ? const CircularProgressIndicator()
-                  : const Text('Send OTP'),
+                  : const Text(AppConstants.sendOtp),
             ),
           ],
         ),

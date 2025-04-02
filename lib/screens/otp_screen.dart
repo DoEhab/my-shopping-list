@@ -1,4 +1,5 @@
 import 'package:e_shopping_list/screens/user_list_screen.dart';
+import 'package:e_shopping_list/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,7 +33,7 @@ class _OTPScreenState extends State<OTPScreen> {
   Future<void> _verifyOTP() async {
     if (_otpController.text.trim().isEmpty) {
       Fluttertoast.showToast(
-        msg: "Please enter OTP",
+        msg: AppConstants.enterOtp,
         gravity: ToastGravity.BOTTOM,
         textColor: Colors.white,
       );
@@ -54,7 +55,7 @@ class _OTPScreenState extends State<OTPScreen> {
         //save the new user to firestore
         await saveUserToFirestore(userCredential.user!, uName);
         Fluttertoast.showToast(
-          msg: "Successfully logged in!",
+          msg: AppConstants.successLogin,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.white,
         );
@@ -67,17 +68,17 @@ class _OTPScreenState extends State<OTPScreen> {
         }
       }
     } on FirebaseAuthException catch (e) {
-      String errorMessage = 'Verification failed';
+      String errorMessage = AppConstants.verificationError;
 
       switch (e.code) {
         case 'invalid-verification-code':
-          errorMessage = 'Invalid OTP code';
+          errorMessage = AppConstants.invalidOtp;
           break;
         case 'invalid-verification-id':
-          errorMessage = 'Invalid verification ID';
+          errorMessage = AppConstants.invalidID;
           break;
         default:
-          errorMessage = e.message ?? 'An error occurred';
+          errorMessage = e.message ?? AppConstants.generalError;
       }
 
       Fluttertoast.showToast(
@@ -87,7 +88,7 @@ class _OTPScreenState extends State<OTPScreen> {
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "An unexpected error occurred",
+        msg: AppConstants.generalError,
         gravity: ToastGravity.BOTTOM,
         textColor: Colors.white,
       );
@@ -107,14 +108,14 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Enter OTP')),
+      appBar: AppBar(title: const Text(AppConstants.enterOtp)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Enter the verification code sent to ${widget.phoneNumber}',
+              '${AppConstants.enterCode} ${widget.phoneNumber}',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
@@ -122,7 +123,7 @@ class _OTPScreenState extends State<OTPScreen> {
             TextField(
               controller: _otpController,
               decoration: const InputDecoration(
-                hintText: 'Enter OTP',
+                hintText: AppConstants.enterOtp,
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
@@ -138,7 +139,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Verify OTP'),
+                    : const Text(AppConstants.verifyOtp),
               ),
             ),
           ],

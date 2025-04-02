@@ -37,11 +37,11 @@ class _UserListScreenState extends State<UserListScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Create New List'),
+        title: const Text(AppConstants.newListCreate),
         content: TextField(
           controller: _nameController,
           decoration: const InputDecoration(
-            labelText: 'List Name',
+            labelText: AppConstants.listName,
             border: OutlineInputBorder(),
           ),
           autofocus: true,
@@ -49,7 +49,7 @@ class _UserListScreenState extends State<UserListScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(AppConstants.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -69,7 +69,7 @@ class _UserListScreenState extends State<UserListScreen> {
                 Fluttertoast.showToast(msg: AppConstants.successListCreated);
                 Navigator.pop(context);
               } catch (e) {
-                Fluttertoast.showToast(msg: 'Error creating list: $e');
+                Fluttertoast.showToast(msg: "${AppConstants.createListError} $e");
               } finally {
                 setState(() => _isLoading = false);
               }
@@ -87,12 +87,12 @@ class _UserListScreenState extends State<UserListScreen> {
     final bool? confirm = await showDialog<bool>(
       context: dialogContext ?? context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Delete List'),
-        content: const Text('Are you sure you want to delete this list?'),
+        title: const Text(AppConstants.deleteList),
+        content: const Text(AppConstants.deleteConfirmationMsg),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: const Text(AppConstants.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
@@ -118,7 +118,8 @@ class _UserListScreenState extends State<UserListScreen> {
         }
         Fluttertoast.showToast(msg: AppConstants.successListDeleted);
       } catch (e) {
-        Fluttertoast.showToast(msg: 'Error deleting list: $e');
+        Fluttertoast.showToast(msg: "${AppConstants.deleteListError} $e");
+
       } finally {
         setState(() => _isLoading = false);
       }
@@ -226,7 +227,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                   padding: EdgeInsets.all(16.0),
                                   child: Center(
                                     child: Text(
-                                      'No items yet',
+                                      AppConstants.noItems,
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: 16,
@@ -254,7 +255,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Tap to see more...',
+                                    AppConstants.tapForMore,
                                     style: TextStyle(
                                       color: Colors.blue,
                                       fontSize: 12,
@@ -359,9 +360,9 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
 
       _itemController.clear();
       _linkController.clear();
-      Fluttertoast.showToast(msg: 'Item added successfully');
+      Fluttertoast.showToast(msg: AppConstants.successItemAdded);
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error adding item: $e');
+      Fluttertoast.showToast(msg: "${AppConstants.errorItemAdded} $e" );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -378,7 +379,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: widget.onDeleteList,
-            tooltip: 'Delete List',
+            tooltip: AppConstants.deleteList,
           ),
         ],
       ),
@@ -393,7 +394,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                     padding: EdgeInsets.all(16.0),
                     child: Center(
                       child: Text(
-                        'No items yet',
+                        AppConstants.noItems,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
@@ -419,7 +420,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                 TextField(
                   controller: _itemController,
                   decoration: const InputDecoration(
-                    labelText: 'Item Name',
+                    labelText: AppConstants.itemName,
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -442,7 +443,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : const Text('Add Item'),
+                      : const Text(AppConstants.addItem),
                 ),
               ],
             ),
@@ -463,9 +464,9 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
         widget.listName,
         _items,
       );
-      Fluttertoast.showToast(msg: 'Item deleted successfully');
+      Fluttertoast.showToast(msg: AppConstants.successItemAdded);
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error deleting item: $e');
+      Fluttertoast.showToast(msg: "${AppConstants.deleteItemError} $e");
     } finally {
       setState(() => _isLoading = false);
     }
@@ -485,7 +486,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
         _items,
       );
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Error updating item: $e');
+      Fluttertoast.showToast(msg: '${AppConstants.updateItemError} $e');
     } finally {
       setState(() => _isLoading = false);
     }
