@@ -5,7 +5,7 @@ This an app to manage shopping lists with the ability to add links for reference
 - Doha Ehab [www.linkedin.com/in/doha-ahmed-75321735a] 
 - [App Link] (https://appdistribution.firebase.google.com/testerapps/1:985202200278:android:6ee3e75bccf42ac4280377/releases/2prskdsg2hg1g?utm_source=firebase-console)
 - [Demo] (https://drive.google.com/file/d/1ueqfc98v7D0TmYQbsUf5tGSUKgV3Z8kt/view?usp=sharing)
-- [Blog Post] ()
+- [Blog Post] (https://medium.com/@dohaehab/building-my-e-shopping-app-challenges-lessons-and-key-takeaways-cce646b95685)
 
 ## Features
 - Login with email/password
@@ -49,6 +49,9 @@ This an app to manage shopping lists with the ability to add links for reference
 3- **Sync List**
     - Lists are updated instantly
 
+![E-Shopping App Screenshot](images/Screenshot_1.png)
+![E-Shopping App Screenshot](images/Screenshot_2.png)
+![E-Shopping App Screenshot](images/Screenshot_3.png)
 ## Contributing
 
 - Fork the repository 
