@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/shopping_list_item.dart';
 
+/*
+ ShoppingListCard class shows all items in a shopping card
+*/
 class ShoppingListCard extends StatefulWidget {
   final ShoppingListItem item;
   final VoidCallback onDelete;
@@ -21,6 +24,7 @@ class ShoppingListCard extends StatefulWidget {
 class _ShoppingListCardState extends State<ShoppingListCard> {
   bool _isExpanded = false;
 
+  // This functions allows opening link on the browser
   Future<void> _launchUrl() async {
     String? link = widget.item.link;
     if (link == null || link.isEmpty) {

@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+/*
+ This is main function of the s-shopping app.
+ it runs the app through rendering the main widget
+*/
 void main() async {
+  //Firebase initialization
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseAppCheck.instance.activate(
@@ -19,7 +24,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,11 +53,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/*
+ This class initializes the firebase application
+ based on the platform
+*/
 class InitializationWrapper extends StatelessWidget {
   const InitializationWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // if firebase is initialized successfully
+    // it checks the user session
+    // otherwise it shoes an error
     return FutureBuilder(
       future: Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -79,6 +91,11 @@ class InitializationWrapper extends StatelessWidget {
     );
   }
 
+  /*
+ checkUserSession function checks if the user is signed in.
+ if signed in the user navigates to the lists screen
+ otherwise the user is redirected to the login screen
+*/
   void checkUserSession(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
 

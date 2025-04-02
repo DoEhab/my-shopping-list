@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shopping_list/screens/login_with_phone.dart';
 
+/*
+* Login class to display the login options for the user
+*  */
+
 class Login extends StatelessWidget {
   const Login({super.key});
 

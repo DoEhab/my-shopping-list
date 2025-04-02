@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logging/logging.dart';
-
 import 'otp_screen.dart';
 
+/*
+* LoginWithPhone class allows user to enter
+* name and phone number to receive OTP
+* */
 class LoginWithPhone extends StatefulWidget {
   const LoginWithPhone({super.key});
 
@@ -27,7 +30,7 @@ class _LoginWithPhoneState extends State<LoginWithPhone> {
       debugPrint('${record.level.name}: ${record.time}: ${record.message}');
     });
   }
-
+  // validate the phone and name entered data
   Future<void> _verifyPhone() async {
     final phoneNumber = _phoneController.text.trim();
     final userName = _nameController.text.trim();

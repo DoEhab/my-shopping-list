@@ -7,8 +7,10 @@ import '../services/firestore_service.dart';
 import '../widgets/shopping_list_card.dart';
 import '../utils/constants.dart';
 
-// fix adding items and updating the card
-// fix delete card
+/*
+UserListScreen class is the home screen
+It shows all available lists
+* */
 class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key}) : super(key: key);
 
@@ -28,6 +30,8 @@ class _UserListScreenState extends State<UserListScreen> {
     super.dispose();
   }
 
+  // private function to create a new list
+  // and save it to the database
   Future<void> _createList() async {
     // Show dialog to get list name
     await showDialog(
@@ -77,6 +81,7 @@ class _UserListScreenState extends State<UserListScreen> {
     );
   }
 
+  //private function to delete list
   Future<void> _deleteList(String listId, [BuildContext? dialogContext]) async {
     // Show confirmation dialog
     final bool? confirm = await showDialog<bool>(
@@ -287,6 +292,10 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 }
 
+/*
+* ListDetailScreen class uses the shopping_list_card widget
+* to view the list details
+*  */
 class ListDetailScreen extends StatefulWidget {
   final String listId;
   final String listName;
@@ -324,6 +333,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
     super.dispose();
   }
 
+  //private function to add new item to a list
   Future<void> _addItem() async {
     if (_itemController.text.isEmpty) {
       Fluttertoast.showToast(msg: AppConstants.errorEmptyItem);
@@ -442,6 +452,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
     );
   }
 
+  //private function to delete single item from the list
   Future<void> _deleteItem(int index) async {
     setState(() => _isLoading = true);
     try {
@@ -460,6 +471,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
     }
   }
 
+  // private function to check/uncheck an item
   Future<void> _toggleItemCheck(int index) async {
     setState(() => _isLoading = true);
     try {

@@ -1,3 +1,4 @@
+//ShoppingListItem class is data model for items in list
 class ShoppingListItem {
   final String name;
   final String? link;

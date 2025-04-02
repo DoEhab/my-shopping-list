@@ -4,6 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+* OTPScreen class allows users to
+* enter the received OTP
+*  */
+
 class OTPScreen extends StatefulWidget {
   final String verificationId;
   final String phoneNumber;
@@ -23,7 +28,7 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _otpController = TextEditingController();
   bool _isLoading = false;
-
+// private function to verify the OTP using firebase
   Future<void> _verifyOTP() async {
     if (_otpController.text.trim().isEmpty) {
       Fluttertoast.showToast(
@@ -46,6 +51,7 @@ class _OTPScreenState extends State<OTPScreen> {
       final uName = widget.userName;
 
       if (userCredential.user != null) {
+        //save the new user to firestore
         await saveUserToFirestore(userCredential.user!, uName);
         Fluttertoast.showToast(
           msg: "Successfully logged in!",
@@ -141,6 +147,7 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
+  //save the user to firebase database
   Future<void> saveUserToFirestore(User user, String name) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 

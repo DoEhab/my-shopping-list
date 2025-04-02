@@ -4,6 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/*
+LoginWithEmail class allows users to enter their email
+and create new account
+* */
 class LoginWithEmail extends StatefulWidget {
   const LoginWithEmail({
     Key? key,
@@ -18,7 +22,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isLoading = false;
-
+// new users email sign up
   Future<void> _signupWithEmail() async {
     debugPrint('Starting email verification process...');
 
@@ -64,7 +68,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
       Fluttertoast.showToast(msg: 'An unexpected error occurred');
     }
   }
-
+// existing users login with email
   Future<void> _loginWithEmail() async {
     debugPrint('Starting email login process...');
 
@@ -203,7 +207,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmail> {
       ),
     );
   }
-
+//save new users to firebase database
   Future<void> saveUserToFirestore(User user, String name) async {
     debugPrint('Attempting to save user to Firestore...');
     CollectionReference users = FirebaseFirestore.instance.collection('users');
